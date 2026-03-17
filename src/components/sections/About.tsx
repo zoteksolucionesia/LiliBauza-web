@@ -3,14 +3,17 @@
 import { motion } from "framer-motion";
 import { GlassCard } from "@/components/ui/GlassCard";
 import Image from "next/image";
+import { useTheme } from "@/hooks/useTheme";
 import { Award, BookOpen, Shield, Heart } from "lucide-react";
 
 export function About() {
+  const { theme } = useTheme();
+
   return (
     <section
       id="about"
       className="py-24 px-4"
-      style={{ backgroundColor: "var(--color-surface)" }}
+      style={{ backgroundColor: theme.surface }}
     >
       <div className="max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
@@ -25,12 +28,12 @@ export function About() {
             <div className="relative aspect-square max-w-md mx-auto">
               <div
                 className="absolute inset-0 rounded-full opacity-20"
-                style={{ backgroundColor: "var(--color-primary)" }}
+                style={{ backgroundColor: theme.primary }}
               />
               <div
                 className="absolute inset-4 rounded-full overflow-hidden"
                 style={{
-                  border: `3px solid var(--color-primary)44`,
+                  border: `3px solid ${theme.primary}44`,
                 }}
               >
                 <Image
@@ -54,8 +57,8 @@ export function About() {
             <span
               className="inline-block px-4 py-2 rounded-full text-sm font-semibold mb-4"
               style={{
-                backgroundColor: "var(--color-primary-light)",
-                color: "var(--color-primary-dark)",
+                backgroundColor: theme.primaryLight,
+                color: theme.primaryDark,
               }}
             >
               SOBRE MÍ
@@ -63,22 +66,22 @@ export function About() {
 
             <h2
               className="text-4xl md:text-5xl font-serif font-bold mb-2"
-              style={{ color: "var(--color-text)" }}
+              style={{ color: theme.text }}
             >
-              Mtra. <span style={{ color: "var(--color-primary)" }}>Liliana Bauza</span>
+              Mtra. <span style={{ color: theme.primary }}>Liliana Bauza</span>
             </h2>
 
             <p
               className="text-lg mb-6"
-              style={{ color: "var(--color-text-muted)" }}
+              style={{ color: theme.textMuted }}
             >
-              Psicóloga Clínica | Cédula Profesional: 3398478
+              Psicóloga | Cédula Profesional: 3398478
             </p>
 
-            <div className="space-y-4 text-lg" style={{ color: "var(--color-text-muted)" }}>
+            <div className="space-y-4 text-lg" style={{ color: theme.textMuted }}>
               <p>
                 Soy especialista en trauma y conducta compulsiva, con más de
-                <strong style={{ color: "var(--color-text)" }}> 30 años de experiencia</strong> acompañando
+                <strong style={{ color: theme.text }}> 30 años de experiencia</strong> acompañando
                 a personas en su proceso de sanación emocional.
               </p>
               <p>
@@ -95,15 +98,15 @@ export function About() {
                 { icon: Heart, label: "Trauma y Estrés Postraumático" },
                 { icon: Shield, label: "Conducta Compulsiva" },
                 { icon: BookOpen, label: "Terapia Estratégica" },
-                { icon: Award, label: "EMDR Certificado" },
+                { icon: Award, label: "Terapia Familiar" },
               ].map((item) => (
                 <div
                   key={item.label}
                   className="flex items-center gap-2 p-3 rounded-xl"
-                  style={{ backgroundColor: "var(--color-background)" }}
+                  style={{ backgroundColor: theme.background }}
                 >
-                  <item.icon className="w-5 h-5" style={{ color: "var(--color-primary)" }} />
-                  <span className="text-sm font-medium" style={{ color: "var(--color-text)" }}>
+                  <item.icon className="w-5 h-5" style={{ color: theme.primary }} />
+                  <span className="text-sm font-medium" style={{ color: theme.text }}>
                     {item.label}
                   </span>
                 </div>
@@ -114,7 +117,7 @@ export function About() {
             <div className="mt-8">
               <h4
                 className="text-sm font-semibold mb-4 uppercase tracking-wider"
-                style={{ color: "var(--color-text-muted)" }}
+                style={{ color: theme.textMuted }}
               >
                 Formación Académica
               </h4>
@@ -129,14 +132,14 @@ export function About() {
                     key={index}
                     className="p-4 rounded-xl border-l-4"
                     style={{
-                      backgroundColor: "var(--color-background)",
-                      borderLeftColor: "var(--color-primary)",
+                      backgroundColor: theme.background,
+                      borderLeftColor: theme.primary,
                     }}
                   >
-                    <p className="font-semibold" style={{ color: "var(--color-text)" }}>
+                    <p className="font-semibold" style={{ color: theme.text }}>
                       {edu.degree}
                     </p>
-                    <p className="text-sm" style={{ color: "var(--color-text-muted)" }}>
+                    <p className="text-sm" style={{ color: theme.textMuted }}>
                       {edu.institution} • {edu.year}
                     </p>
                   </div>
@@ -149,8 +152,8 @@ export function About() {
               <div
                 className="px-4 py-2 rounded-full text-sm font-semibold"
                 style={{
-                  backgroundColor: "var(--color-primary-light)",
-                  color: "var(--color-primary-dark)",
+                  backgroundColor: theme.primaryLight,
+                  color: theme.primaryDark,
                 }}
               >
                 🇪🇸 Español
@@ -158,8 +161,8 @@ export function About() {
               <div
                 className="px-4 py-2 rounded-full text-sm font-semibold"
                 style={{
-                  backgroundColor: "var(--color-primary-light)",
-                  color: "var(--color-primary-dark)",
+                  backgroundColor: theme.primaryLight,
+                  color: theme.primaryDark,
                 }}
               >
                 🇺🇸 English
@@ -167,8 +170,8 @@ export function About() {
               <div
                 className="px-4 py-2 rounded-full text-sm font-semibold"
                 style={{
-                  backgroundColor: "var(--color-accent)22",
-                  color: "var(--color-accent)",
+                  backgroundColor: `${theme.accent}22`,
+                  color: theme.accent,
                 }}
               >
                 ⭐ 228+ Reseñas Verificadas

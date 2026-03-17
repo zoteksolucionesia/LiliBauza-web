@@ -21,9 +21,9 @@ export function GlassCard({ children, className, hover = true }: GlassCardProps)
         className
       )}
       style={{
-        backgroundColor: "var(--color-surface-transparent)",
-        borderColor: "var(--color-primary)33",
-        boxShadow: "0 8px 32px var(--color-primary)15",
+        backgroundColor: `${theme.surface}E6`,
+        borderColor: `${theme.primary}33`,
+        boxShadow: `0 8px 32px ${theme.primary}15`,
       }}
       whileHover={hover ? { y: -4 } : {}}
     >

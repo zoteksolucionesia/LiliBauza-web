@@ -3,8 +3,11 @@
 import { motion } from "framer-motion";
 import { Heart, Users, Brain, Sparkles, Clock, Shield, Eye, Home, Phone } from "lucide-react";
 import { GlassCard } from "@/components/ui/GlassCard";
+import { useTheme } from "@/hooks/useTheme";
 
 export function Services() {
+  const { theme } = useTheme();
+
   const services = [
     {
       icon: Heart,
@@ -83,13 +86,13 @@ export function Services() {
   const getIconColor = (color: string) => {
     switch (color) {
       case "primary":
-        return "var(--color-primary)";
+        return theme.primary;
       case "secondary":
-        return "var(--color-secondary)";
+        return theme.secondary;
       case "accent":
-        return "var(--color-accent)";
+        return theme.accent;
       default:
-        return "var(--color-primary)";
+        return theme.primary;
     }
   };
 
@@ -97,12 +100,12 @@ export function Services() {
     <section
       id="services"
       className="py-24 px-4 relative"
-      style={{ backgroundColor: "var(--color-background)" }}
+      style={{ backgroundColor: theme.background }}
     >
       {/* Background decoration */}
       <div
         className="absolute top-1/2 left-0 w-72 h-72 rounded-full opacity-20 blur-3xl"
-        style={{ backgroundColor: "var(--color-primary-light)" }}
+        style={{ backgroundColor: theme.primaryLight }}
       />
 
       <div className="max-w-7xl mx-auto relative">
@@ -117,22 +120,22 @@ export function Services() {
           <span
             className="inline-block px-4 py-2 rounded-full text-sm font-semibold mb-4"
             style={{
-              backgroundColor: "var(--color-primary-light)",
-              color: "var(--color-primary-dark)",
+              backgroundColor: theme.primaryLight,
+              color: theme.primaryDark,
             }}
           >
             SERVICIOS Y HONORARIOS
           </span>
           <h2
             className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold mb-6"
-            style={{ color: "var(--color-text)" }}
+            style={{ color: theme.text }}
           >
             ¿Cómo puedo{" "}
-            <span style={{ color: "var(--color-primary)" }}>ayudarte</span>?
+            <span style={{ color: theme.primary }}>ayudarte</span>?
           </h2>
           <p
             className="text-xl max-w-2xl mx-auto"
-            style={{ color: "var(--color-text-muted)" }}
+            style={{ color: theme.textMuted }}
           >
             Enfoques basados en evidencia con calidez humana.
             Sesiones individuales, de pareja y familiares.
@@ -163,7 +166,7 @@ export function Services() {
                 <div className="flex justify-between items-start mb-3">
                   <h3
                     className="text-xl font-bold"
-                    style={{ color: "var(--color-text)" }}
+                    style={{ color: theme.text }}
                   >
                     {service.title}
                   </h3>
@@ -181,12 +184,12 @@ export function Services() {
                   </span>
                 </div>
 
-                <p className="text-sm mb-2" style={{ color: "var(--color-text-muted)" }}>
+                <p className="text-sm mb-2" style={{ color: theme.textMuted }}>
                   <Clock className="w-4 h-4 inline mr-1" />
                   {service.duration}
                 </p>
 
-                <p style={{ color: "var(--color-text-muted)" }}>
+                <p style={{ color: theme.textMuted }}>
                   {service.description}
                 </p>
               </GlassCard>
@@ -203,10 +206,10 @@ export function Services() {
           className="mt-12 text-center"
         >
           <GlassCard>
-            <p className="text-lg mb-4" style={{ color: "var(--color-text)" }}>
+            <p className="text-lg mb-4" style={{ color: theme.text }}>
               <strong>Métodos de Pago:</strong> Efectivo, Tarjeta de Crédito/Débito, Transferencia
             </p>
-            <p className="text-sm" style={{ color: "var(--color-text-muted)" }}>
+            <p className="text-sm" style={{ color: theme.textMuted }}>
               ⚠️ No acepto seguros de gastos médicos mayores. Particular.
             </p>
           </GlassCard>

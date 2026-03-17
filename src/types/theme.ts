@@ -65,6 +65,19 @@ export const themeColors: Record<string, ThemeColor> = {
     text: "#2F3E46",
     textMuted: "#6B7280",
   },
+  rosa: {
+    name: "Palo de Rosa",
+    primary: "#D4A5A5",
+    primaryLight: "#E8C4C4",
+    primaryDark: "#B88B8B",
+    secondary: "#C9B1B1",
+    secondaryLight: "#DDD1D1",
+    accent: "#E5989B",
+    background: "#FDF8F8",
+    surface: "#FFFFFF",
+    text: "#3D2929",
+    textMuted: "#7D6B6B",
+  },
 };
 
 export type ThemeName = keyof typeof themeColors;

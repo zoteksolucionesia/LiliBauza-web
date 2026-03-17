@@ -1,13 +1,16 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Calendar, X } from "lucide-react";
+import { Calendar } from "lucide-react";
+import { useTheme } from "@/hooks/useTheme";
 
 interface FloatingBookButtonProps {
   onClick: () => void;
 }
 
 export function FloatingBookButton({ onClick }: FloatingBookButtonProps) {
+  const { theme } = useTheme();
+
   return (
     <>
       {/* Floating button - visible on scroll */}
@@ -19,7 +22,7 @@ export function FloatingBookButton({ onClick }: FloatingBookButtonProps) {
         onClick={onClick}
         className="fixed bottom-6 right-6 z-40 flex items-center gap-3 px-6 py-4 rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300"
         style={{
-          backgroundColor: "var(--color-primary)",
+          backgroundColor: theme.primary,
           color: "#FFFFFF",
         }}
         aria-label="Reservar cita ahora"
@@ -37,7 +40,7 @@ export function FloatingBookButton({ onClick }: FloatingBookButtonProps) {
         onClick={onClick}
         className="fixed bottom-6 right-6 z-40 sm:hidden w-14 h-14 rounded-full shadow-2xl flex items-center justify-center"
         style={{
-          backgroundColor: "var(--color-primary)",
+          backgroundColor: theme.primary,
           color: "#FFFFFF",
         }}
         aria-label="Reservar cita"

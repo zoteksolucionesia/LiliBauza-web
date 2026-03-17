@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { themeColors, type ThemeName } from "@/types/theme";
 
 export function useTheme() {
-  const [themeName, setThemeName] = useState<ThemeName>("lila");
+  const [themeName, setThemeName] = useState<ThemeName>("rosa");
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {

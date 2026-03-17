@@ -31,6 +31,7 @@ export function Header({ onBookClick }: HeaderProps) {
     { label: "Servicios", href: "#services" },
     { label: "Qué Esperar", href: "#expect" },
     { label: "Testimonios", href: "#testimonials" },
+    { label: "Contacto", href: "#contact" },
   ];
 
   return (

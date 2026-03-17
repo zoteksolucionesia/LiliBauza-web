@@ -31,9 +31,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   if (!isLoaded) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: "#FAFAFF" }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: "#FDF8F8" }}>
         <div className="animate-pulse text-center">
-          <div className="w-16 h-16 rounded-full bg-purple-200 mx-auto mb-4" />
+          <div className="w-16 h-16 rounded-full bg-pink-200 mx-auto mb-4" />
           <p className="text-gray-500">Cargando...</p>
         </div>
       </div>

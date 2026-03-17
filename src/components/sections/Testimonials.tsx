@@ -4,8 +4,10 @@ import { motion } from "framer-motion";
 import { Star, Quote, Heart } from "lucide-react";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { useState } from "react";
+import { useTheme } from "@/hooks/useTheme";
 
 export function Testimonials() {
+  const { theme } = useTheme();
   const [activeIndex, setActiveIndex] = useState(0);
 
   const testimonials = [
@@ -51,12 +53,12 @@ export function Testimonials() {
     <section
       id="testimonials"
       className="py-24 px-4 relative overflow-hidden"
-      style={{ backgroundColor: "var(--color-surface)" }}
+      style={{ backgroundColor: theme.surface }}
     >
       {/* Background decoration */}
       <div
         className="absolute top-0 right-0 w-96 h-96 rounded-full opacity-10 blur-3xl"
-        style={{ backgroundColor: "var(--color-secondary)" }}
+        style={{ backgroundColor: theme.secondary }}
       />
 
       <div className="max-w-7xl mx-auto relative">
@@ -71,22 +73,22 @@ export function Testimonials() {
           <span
             className="inline-block px-4 py-2 rounded-full text-sm font-semibold mb-4"
             style={{
-              backgroundColor: "var(--color-primary-light)",
-              color: "var(--color-primary-dark)",
+              backgroundColor: theme.primaryLight,
+              color: theme.primaryDark,
             }}
           >
             TESTIMONIOS
           </span>
           <h2
             className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold mb-6"
-            style={{ color: "var(--color-text)" }}
+            style={{ color: theme.text }}
           >
             Historias de{" "}
-            <span style={{ color: "var(--color-primary)" }}>transformación</span>
+            <span style={{ color: theme.primary }}>transformación</span>
           </h2>
           <p
             className="text-xl max-w-2xl mx-auto"
-            style={{ color: "var(--color-text-muted)" }}
+            style={{ color: theme.textMuted }}
           >
             Más de 228 reseñas verificadas en Doctoralia.
             Personas que confiaron en mí para acompañarlas en su proceso.
@@ -105,7 +107,7 @@ export function Testimonials() {
             <GlassCard className="text-center py-12">
               <Quote
                 className="w-12 h-12 mx-auto mb-6"
-                style={{ color: "var(--color-primary)", opacity: 0.3 }}
+                style={{ color: theme.primary, opacity: 0.3 }}
               />
 
               <div className="flex items-center justify-center gap-1 mb-6">
@@ -113,25 +115,25 @@ export function Testimonials() {
                   <Star
                     key={i}
                     className="w-5 h-5 fill-current"
-                    style={{ color: "var(--color-accent)" }}
+                    style={{ color: theme.accent }}
                   />
                 ))}
               </div>
 
               <p
                 className="text-xl md:text-2xl leading-relaxed mb-8 italic"
-                style={{ color: "var(--color-text)" }}
+                style={{ color: theme.text }}
               >
                 "{testimonials[activeIndex].text}"
               </p>
 
               <div className="flex items-center justify-center gap-2 mb-2">
-                <Heart className="w-5 h-5" style={{ color: "var(--color-accent)" }} />
-                <p className="font-semibold" style={{ color: "var(--color-text)" }}>
+                <Heart className="w-5 h-5" style={{ color: theme.accent }} />
+                <p className="font-semibold" style={{ color: theme.text }}>
                   {testimonials[activeIndex].author}
                 </p>
               </div>
-              <p className="text-sm" style={{ color: "var(--color-text-muted)" }}>
+              <p className="text-sm" style={{ color: theme.textMuted }}>
                 {testimonials[activeIndex].date}
               </p>
             </GlassCard>
@@ -145,7 +147,7 @@ export function Testimonials() {
                 onClick={() => setActiveIndex(index)}
                 className="w-3 h-3 rounded-full transition-all duration-300"
                 style={{
-                  backgroundColor: index === activeIndex ? "var(--color-primary)" : "var(--color-primary)44",
+                  backgroundColor: index === activeIndex ? theme.primary : `${theme.primary}44`,
                   scale: index === activeIndex ? 1.2 : 1,
                 }}
                 aria-label={`Ver testimonio ${index + 1}`}
@@ -171,11 +173,11 @@ export function Testimonials() {
             <GlassCard key={stat.label} className="text-center">
               <p
                 className="text-4xl font-bold mb-2"
-                style={{ color: "var(--color-primary-dark)" }}
+                style={{ color: theme.primaryDark }}
               >
                 {stat.number}
               </p>
-              <p className="text-sm" style={{ color: "var(--color-text-muted)" }}>
+              <p className="text-sm" style={{ color: theme.textMuted }}>
                 {stat.label}
               </p>
             </GlassCard>
@@ -192,7 +194,7 @@ export function Testimonials() {
         >
           <p
             className="text-sm mb-4"
-            style={{ color: "var(--color-text-muted)" }}
+            style={{ color: theme.textMuted }}
           >
             Perfil verificado en
           </p>
