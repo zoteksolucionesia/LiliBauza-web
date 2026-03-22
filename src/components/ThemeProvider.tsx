@@ -1,10 +1,31 @@
 "use client";
 
-import { useTheme } from "@/hooks/useTheme";
-import { useEffect } from "react";
+import { createContext, useContext, useEffect, useState, useCallback, ReactNode } from "react";
+import { themeColors, type ThemeName, type ThemeColor } from "@/types/theme";
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const { theme, isLoaded } = useTheme();
+interface ThemeContextType {
+  theme: ThemeColor;
+  themeName: ThemeName;
+  setTheme: (name: ThemeName) => void;
+  isLoaded: boolean;
+  themes: ThemeName[];
+}
+
+const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+
+export function ThemeProvider({ children }: { children: ReactNode }) {
+  const [themeName, setThemeName] = useState<ThemeName>("rosa");
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("lilibauza-theme") as ThemeName;
+    if (saved && themeColors[saved]) {
+      setThemeName(saved);
+    }
+    setIsLoaded(true);
+  }, []);
+
+  const theme = themeColors[themeName];
 
   useEffect(() => {
     if (isLoaded) {
@@ -29,6 +50,19 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     }
   }, [theme, isLoaded]);
 
+  const setTheme = useCallback((name: ThemeName) => {
+    setThemeName(name);
+    localStorage.setItem("lilibauza-theme", name);
+  }, []);
+
+  const value = {
+    theme,
+    themeName,
+    setTheme,
+    isLoaded,
+    themes: Object.keys(themeColors) as ThemeName[],
+  };
+
   if (!isLoaded) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: "#FDF8F8" }}>
@@ -40,5 +74,13 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     );
   }
 
-  return <>{children}</>;
+  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
+}
+
+export function useThemeContext() {
+  const context = useContext(ThemeContext);
+  if (context === undefined) {
+    throw new Error("useThemeContext must be used within a ThemeProvider");
+  }
+  return context;
 }

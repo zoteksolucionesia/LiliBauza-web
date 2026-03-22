@@ -37,6 +37,22 @@ export function Hero({ onBookClick }: HeroProps) {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="order-2 lg:order-1"
           >
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="mb-8"
+            >
+              <Image
+                src="/images/logo_oficial.png"
+                alt="Logo Oficial - Lili Bauza"
+                width={180}
+                height={80}
+                className="h-auto w-auto max-w-[150px] md:max-w-[180px]"
+                priority
+              />
+            </motion.div>
+
             <motion.span
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}

@@ -65,7 +65,7 @@ export function BookingModal({ isOpen, onClose }: BookingModalProps) {
               {/* Calendly Embed */}
               <div className="h-[calc(100%-73px)] overflow-auto">
                 <iframe
-                  src="https://calendly.com/lilibauza/30min?hide_gdpr_banner=1&text_color=1e1b4b&primary_color=a78bfa"
+                  src={`https://calendly.com/lilibauza/30min?locale=es&embed_locale=es&language=es&hide_gdpr_banner=1&text_color=${theme.text.replace("#", "")}&primary_color=${theme.primary.replace("#", "")}`}
                   width="100%"
                   height="100%"
                   frameBorder="0"
