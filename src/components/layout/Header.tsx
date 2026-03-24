@@ -3,9 +3,11 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Calendar } from "lucide-react";
+import Image from "next/image";
 import { ThemeSwitcher } from "@/components/ui/ThemeSwitcher";
 import { useTheme } from "@/hooks/useTheme";
 import { cn } from "@/lib/utils";
+import { content } from "@/constants/content";
 
 interface HeaderProps {
   onBookClick: () => void;
@@ -16,6 +18,7 @@ export function Header({ onBookClick }: HeaderProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const { theme } = useTheme();
+  const { brand, quickLinks } = content;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,14 +28,7 @@ export function Header({ onBookClick }: HeaderProps) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const navItems = [
-    { label: "Inicio", href: "#hero" },
-    { label: "Sobre Mí", href: "#about" },
-    { label: "Servicios", href: "#services" },
-    { label: "Qué Esperar", href: "#expect" },
-    { label: "Testimonios", href: "#testimonials" },
-    { label: "Contacto", href: "#contact" },
-  ];
+  const navItems = quickLinks;
 
   return (
     <motion.header
@@ -54,16 +50,26 @@ export function Header({ onBookClick }: HeaderProps) {
           {/* Logo */}
           <motion.a
             href="#hero"
-            className="text-2xl md:text-3xl font-serif font-bold"
-            style={{ color: theme.text }}
+            className="flex items-center gap-3"
             whileHover={{ scale: 1.02 }}
           >
-            Lili<span style={{ color: theme.primary }}>Bauza</span>
+            <div className="relative w-10 h-10 md:w-12 md:h-12">
+              <Image
+                src="/images/logo_oficial.png"
+                alt="Logo"
+                fill
+                className="object-contain"
+              />
+            </div>
+            <span className="text-xl md:text-2xl font-serif font-bold" style={{ color: theme.text }}>
+              {brand.logo_text.split(' ')[0]}
+              <span style={{ color: theme.primary }}>{brand.logo_text.split(' ')[1]}</span>
+            </span>
           </motion.a>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-2">
-            {navItems.map((item) => (
+            {navItems.map((item: any) => (
               <motion.a
                 key={item.label}
                 href={item.href}
@@ -124,7 +130,7 @@ export function Header({ onBookClick }: HeaderProps) {
             style={{ backgroundColor: theme.surface }}
           >
             <nav className="px-4 py-6 space-y-2">
-              {navItems.map((item) => (
+              {navItems.map((item: any) => (
                 <motion.a
                   key={item.label}
                   href={item.href}

@@ -6,48 +6,12 @@ import { GlassCard } from "@/components/ui/GlassCard";
 import { useState } from "react";
 import { useTheme } from "@/hooks/useTheme";
 
+import { content } from "@/constants/content";
+
 export function Testimonials() {
   const { theme } = useTheme();
   const [activeIndex, setActiveIndex] = useState(0);
-
-  const testimonials = [
-    {
-      text: "Muy contenta con la profesionalismo y objetividad de la Mtra. Liliana Bauza. La terapia nos apoya muchísimo en la vida diaria.",
-      author: "Cristina",
-      date: "5 de Marzo, 2025",
-      rating: 5,
-    },
-    {
-      text: "Una experiencia gratificante y reconfortante. Muy profesional, amable y abierta a las ideas del paciente. La recomiendo ampliamente.",
-      author: "Daniel Rincón Avalos",
-      date: "2 de Julio, 2024",
-      rating: 5,
-    },
-    {
-      text: "Su empatía y paciencia al explicar cada detalle me hace valorarla como mi psicóloga. Me hace sentir cómoda y con confianza.",
-      author: "Paulina Sánchez Riverón",
-      date: "15 de Marzo, 2024",
-      rating: 5,
-    },
-    {
-      text: "Buena amabilidad, preguntas sobre el problema, consejos para mejorar y resultados rápidos de las terapias. Muy recomendada.",
-      author: "Paulo Rgez. N.",
-      date: "12 de Febrero, 2026",
-      rating: 5,
-    },
-    {
-      text: "¡Superó mis expectativas! Muy profesional, comprensiva y respetuosa. ¡Totalmente recomendada!",
-      author: "Alejandro Juárez",
-      date: "4 de Noviembre, 2025",
-      rating: 5,
-    },
-    {
-      text: "La Mtra. Bauza tiene una forma única de hacer sentir escuchado y comprendido. Mi autoestima ha cambiado completamente después de un año de terapia.",
-      author: "A. L.",
-      date: "Paciente de 1 año",
-      rating: 5,
-    },
-  ];
+  const { testimonials, social } = content;
 
   return (
     <section
@@ -77,21 +41,20 @@ export function Testimonials() {
               color: theme.primaryDark,
             }}
           >
-            TESTIMONIOS
+            {testimonials.badge}
           </span>
           <h2
             className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold mb-6"
             style={{ color: theme.text }}
           >
-            Historias de{" "}
-            <span style={{ color: theme.primary }}>transformación</span>
+            {testimonials.title.main}
+            <span style={{ color: theme.primary }}>{testimonials.title.highlight}</span>
           </h2>
           <p
             className="text-xl max-w-2xl mx-auto"
             style={{ color: theme.textMuted }}
           >
-            Más de 228 reseñas verificadas en Doctoralia.
-            Personas que confiaron en mí para acompañarlas en su proceso.
+            {testimonials.description}
           </p>
         </motion.div>
 
@@ -111,7 +74,7 @@ export function Testimonials() {
               />
 
               <div className="flex items-center justify-center gap-1 mb-6">
-                {[...Array(testimonials[activeIndex].rating)].map((_, i) => (
+                {[...Array(testimonials.items[activeIndex].rating)].map((_, i) => (
                   <Star
                     key={i}
                     className="w-5 h-5 fill-current"
@@ -124,31 +87,30 @@ export function Testimonials() {
                 className="text-xl md:text-2xl leading-relaxed mb-8 italic"
                 style={{ color: theme.text }}
               >
-                "{testimonials[activeIndex].text}"
+                "{testimonials.items[activeIndex].text}"
               </p>
 
               <div className="flex items-center justify-center gap-2 mb-2">
                 <Heart className="w-5 h-5" style={{ color: theme.accent }} />
                 <p className="font-semibold" style={{ color: theme.text }}>
-                  {testimonials[activeIndex].author}
+                  {testimonials.items[activeIndex].author}
                 </p>
               </div>
               <p className="text-sm" style={{ color: theme.textMuted }}>
-                {testimonials[activeIndex].date}
+                {testimonials.items[activeIndex].date}
               </p>
             </GlassCard>
           </motion.div>
 
           {/* Navigation dots */}
           <div className="flex justify-center gap-3 mt-8">
-            {testimonials.map((_, index) => (
+            {testimonials.items.map((_, index) => (
               <button
                 key={index}
                 onClick={() => setActiveIndex(index)}
-                className="w-3 h-3 rounded-full transition-all duration-300"
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${index === activeIndex ? "scale-125" : ""}`}
                 style={{
                   backgroundColor: index === activeIndex ? theme.primary : `${theme.primary}44`,
-                  scale: index === activeIndex ? 1.2 : 1,
                 }}
                 aria-label={`Ver testimonio ${index + 1}`}
               />
@@ -164,12 +126,7 @@ export function Testimonials() {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6"
         >
-          {[
-            { number: "228+", label: "Reseñas Verificadas" },
-            { number: "30+", label: "Años de Experiencia" },
-            { number: "1000+", label: "Pacientes Atendidos" },
-            { number: "100%", label: "Confidencialidad" },
-          ].map((stat) => (
+          {testimonials.stats.map((stat) => (
             <GlassCard key={stat.label} className="text-center">
               <p
                 className="text-4xl font-bold mb-2"
@@ -199,7 +156,7 @@ export function Testimonials() {
             Perfil verificado en
           </p>
           <a
-            href="https://www.doctoralia.com.mx/liliana-bauza/psicologo/villa-de-alvarez"
+            href={social.doctoralia}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block px-6 py-3 rounded-full font-semibold transition-all hover:shadow-lg"

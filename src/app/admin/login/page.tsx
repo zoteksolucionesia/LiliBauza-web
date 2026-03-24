@@ -3,19 +3,7 @@
 import { useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { useRouter } from "next/navigation";
-
-// Colores Palo de Rosa (por defecto)
-const colors = {
-  primary: "#D4A5A5",
-  primaryLight: "#E8C4C4",
-  primaryDark: "#B88B8B",
-  secondary: "#C9B1B1",
-  accent: "#E5989B",
-  background: "#FDF8F8",
-  surface: "#FFFFFF",
-  text: "#3D2929",
-  textMuted: "#7D6B6B",
-};
+import { adminColors as colors } from "@/lib/adminColors";
 
 export default function AdminLogin() {
   const router = useRouter();
@@ -41,20 +29,6 @@ export default function AdminLogin() {
     }
 
     router.push("/admin/dashboard");
-  }
-
-  async function handleSignUp() {
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-    });
-
-    if (error) {
-      setError(error.message);
-      return;
-    }
-
-    alert("Cuenta creada. Por favor verifica tu email.");
   }
 
   return (
@@ -132,14 +106,14 @@ export default function AdminLogin() {
 
         <div className="mt-6 text-center">
           <p className="text-sm" style={{ color: colors.textMuted }}>
-            ¿Es tu primera vez?{" "}
-            <button
-              onClick={handleSignUp}
+            ¿Problemas para acceder?{" "}
+            <a
+              href="mailto:zoteksolucionesia@gmail.com"
               className="font-medium hover:underline"
               style={{ color: colors.primaryDark }}
             >
-              Crear cuenta
-            </button>
+              Contacta al soporte
+            </a>
           </p>
         </div>
       </div>

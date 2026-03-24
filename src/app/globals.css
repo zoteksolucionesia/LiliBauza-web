@@ -39,12 +39,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #c1b5fd;
+  background: var(--color-primary, #c1b5fd);
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #a78bfa;
+  background: var(--color-primary-dark, #a78bfa);
 }
 
 /* Focus styles for accessibility */

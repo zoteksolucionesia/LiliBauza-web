@@ -12,7 +12,7 @@ export type ThemeColor = {
   textMuted: string;
 };
 
-export const themeColors: Record<string, ThemeColor> = {
+export const themeColors = {
   lila: {
     name: "Lila Suave",
     primary: "#A78BFA",
@@ -78,6 +78,6 @@ export const themeColors: Record<string, ThemeColor> = {
     text: "#3D2929",
     textMuted: "#7D6B6B",
   },
-};
+} satisfies Record<string, ThemeColor>;
 
 export type ThemeName = keyof typeof themeColors;

@@ -6,8 +6,11 @@ import Image from "next/image";
 import { useTheme } from "@/hooks/useTheme";
 import { Award, BookOpen, Shield, Heart } from "lucide-react";
 
+import { content } from "@/constants/content";
+
 export function About() {
   const { theme } = useTheme();
+  const { about, brand } = content;
 
   return (
     <section
@@ -38,7 +41,7 @@ export function About() {
               >
                 <Image
                   src="/images/LiliBauza.png"
-                  alt="Mtra. Liliana Bauza - Psicóloga Certificada"
+                  alt={`${brand.title} ${brand.name} - ${brand.specialty}`}
                   fill
                   className="object-cover"
                   sizes="(max-width: 768px) 100vw, 50vw"
@@ -61,56 +64,54 @@ export function About() {
                 color: theme.primaryDark,
               }}
             >
-              SOBRE MÍ
+              {about.badge}
             </span>
 
             <h2
               className="text-4xl md:text-5xl font-serif font-bold mb-2"
               style={{ color: theme.text }}
             >
-              Mtra. <span style={{ color: theme.primary }}>Liliana Bauza</span>
+              {brand.title} <span style={{ color: theme.primary }}>{brand.name}</span>
             </h2>
 
             <p
               className="text-lg mb-6"
               style={{ color: theme.textMuted }}
             >
-              Psicóloga | Cédula Profesional: 3398478
+              Psicóloga | Cédula Profesional: {brand.license}
             </p>
 
             <div className="space-y-4 text-lg" style={{ color: theme.textMuted }}>
-              <p>
-                Soy especialista en trauma y conducta compulsiva, con más de
-                <strong style={{ color: theme.text }}> 30 años de experiencia</strong> acompañando
-                a personas en su proceso de sanación emocional.
-              </p>
-              <p>
-                Mi enfoque combina la Terapia Estratégica, Terapia Sistémica Breve,
-                Terapia Conductual y Terapia Humanista. Creo firmemente que
-                <em> "la vida no es una serie de errores, sino oportunidades nuevas para
-                  colectar experiencias de madurez, responsabilidad y felicidad."</em>
-              </p>
+              {about.description.map((para, i) => (
+                <p key={i}>
+                  {para.split("**").map((part, index) =>
+                    index % 2 === 1 ? <strong key={index} style={{ color: theme.text }}>{part}</strong> :
+                    part.includes("*") ?
+                      part.split("*").map((sub, j) => j % 2 === 1 ? <em key={j}>{sub}</em> : sub) :
+                      part
+                  )}
+                </p>
+              ))}
             </div>
 
             {/* Specialties */}
             <div className="mt-8 grid grid-cols-2 gap-3">
-              {[
-                { icon: Heart, label: "Trauma y Estrés Postraumático" },
-                { icon: Shield, label: "Conducta Compulsiva" },
-                { icon: BookOpen, label: "Terapia Estratégica" },
-                { icon: Award, label: "Terapia Familiar" },
-              ].map((item) => (
-                <div
-                  key={item.label}
-                  className="flex items-center gap-2 p-3 rounded-xl"
-                  style={{ backgroundColor: theme.background }}
-                >
-                  <item.icon className="w-5 h-5" style={{ color: theme.primary }} />
-                  <span className="text-sm font-medium" style={{ color: theme.text }}>
-                    {item.label}
-                  </span>
-                </div>
-              ))}
+              {about.specialties.map((item, index) => {
+                const icons = [Heart, Shield, BookOpen, Award];
+                const Icon = icons[index % icons.length];
+                return (
+                  <div
+                    key={item.label}
+                    className="flex items-center gap-2 p-3 rounded-xl"
+                    style={{ backgroundColor: theme.background }}
+                  >
+                    <Icon className="w-5 h-5" style={{ color: theme.primary }} />
+                    <span className="text-sm font-medium" style={{ color: theme.text }}>
+                      {item.label}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
 
             {/* Credentials */}
@@ -122,12 +123,7 @@ export function About() {
                 Formación Académica
               </h4>
               <div className="space-y-3">
-                {[
-                  { degree: "Maestría en Terapia Familiar", institution: "CEFAP & Universidad Autónoma de Campeche", year: "2017" },
-                  { degree: "Diplomado en Intervención de Crisis", institution: "CONTACTO, Jalisco", year: "2017" },
-                  { degree: "Diplomado en Terapia Breve y MRI", institution: "CEFAP", year: "2015" },
-                  { degree: "Terapia Humanista Centrada en la Persona", institution: "UVM MÉXICO", year: "1995" },
-                ].map((edu, index) => (
+                {about.education.map((edu, index) => (
                   <div
                     key={index}
                     className="p-4 rounded-xl border-l-4"
@@ -149,24 +145,18 @@ export function About() {
 
             {/* Languages & Recognition */}
             <div className="mt-8 flex flex-wrap gap-4">
-              <div
-                className="px-4 py-2 rounded-full text-sm font-semibold"
-                style={{
-                  backgroundColor: theme.primaryLight,
-                  color: theme.primaryDark,
-                }}
-              >
-                🇪🇸 Español
-              </div>
-              <div
-                className="px-4 py-2 rounded-full text-sm font-semibold"
-                style={{
-                  backgroundColor: theme.primaryLight,
-                  color: theme.primaryDark,
-                }}
-              >
-                🇺🇸 English
-              </div>
+              {content.hero.languages.map(lang => (
+                <div
+                  key={lang}
+                  className="px-4 py-2 rounded-full text-sm font-semibold"
+                  style={{
+                    backgroundColor: theme.primaryLight,
+                    color: theme.primaryDark,
+                  }}
+                >
+                  {lang}
+                </div>
+              ))}
               <div
                 className="px-4 py-2 rounded-full text-sm font-semibold"
                 style={{
@@ -174,7 +164,7 @@ export function About() {
                   color: theme.accent,
                 }}
               >
-                ⭐ 228+ Reseñas Verificadas
+                ⭐ {content.testimonials.stats[0].number} Reseñas Verificadas
               </div>
             </div>
           </motion.div>

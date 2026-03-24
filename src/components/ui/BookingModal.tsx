@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Calendar } from "lucide-react";
+import { X, Calendar, ExternalLink } from "lucide-react";
 import { useTheme } from "@/hooks/useTheme";
+import { content } from "@/constants/content";
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -12,6 +13,16 @@ interface BookingModalProps {
 
 export function BookingModal({ isOpen, onClose }: BookingModalProps) {
   const { theme } = useTheme();
+  const [iframeLoaded, setIframeLoaded] = useState(false);
+  const { booking } = content;
+
+  // Reset loaded state when modal closes/opens
+  useEffect(() => {
+    if (!isOpen) setIframeLoaded(false);
+  }, [isOpen]);
+
+  // Cal.com embed URL with locale forced to Spanish
+  const calUrl = `${booking.cal_url}?locale=es&theme=light&hideEventTypeDetails=0&layout=month_view`;
 
   return (
     <AnimatePresence>
@@ -51,26 +62,63 @@ export function BookingModal({ isOpen, onClose }: BookingModalProps) {
               >
                 <div className="flex items-center gap-3">
                   <Calendar className="w-6 h-6" />
-                  <h3 className="text-xl font-bold">Agenda tu Cita</h3>
+                  <h3 className="text-xl font-bold">{booking.modal_title}</h3>
                 </div>
-                <button
-                  onClick={onClose}
-                  className="p-2 hover:bg-white/20 rounded-full transition-colors"
-                  aria-label="Cerrar"
-                >
-                  <X className="w-6 h-6" />
-                </button>
+                <div className="flex items-center gap-2">
+                  <a
+                    href={booking.cal_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1 text-sm px-3 py-1 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
+                    title="Abrir Cal.com directamente"
+                  >
+                    <ExternalLink className="w-4 h-4" />
+                    <span className="hidden sm:inline">Abrir en nueva pestaña</span>
+                  </a>
+                  <button
+                    onClick={onClose}
+                    className="p-2 hover:bg-white/20 rounded-full transition-colors"
+                    aria-label="Cerrar"
+                  >
+                    <X className="w-6 h-6" />
+                  </button>
+                </div>
               </div>
 
-              {/* Calendly Embed */}
-              <div className="h-[calc(100%-73px)] overflow-auto">
+              {/* Cal.com Embed */}
+              <div className="h-[calc(100%-73px)] overflow-auto relative">
+                {!iframeLoaded && (
+                  <div
+                    className="absolute inset-0 flex flex-col items-center justify-center gap-4"
+                    style={{ backgroundColor: theme.background }}
+                  >
+                    <div
+                      className="w-10 h-10 rounded-full animate-pulse"
+                      style={{ backgroundColor: theme.primaryLight }}
+                    />
+                    <p className="text-sm" style={{ color: theme.textMuted }}>
+                      {booking.loading_text}
+                    </p>
+                    <a
+                      href={booking.cal_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm underline"
+                      style={{ color: theme.primary }}
+                    >
+                      {booking.fallback_text}
+                    </a>
+                  </div>
+                )}
                 <iframe
-                  src={`https://calendly.com/lilibauza/30min?locale=es&embed_locale=es&language=es&hide_gdpr_banner=1&text_color=${theme.text.replace("#", "")}&primary_color=${theme.primary.replace("#", "")}`}
+                  src={calUrl}
                   width="100%"
                   height="100%"
                   frameBorder="0"
+                  lang="es"
                   title="Selecciona una fecha y hora para tu cita"
-                  style={{ backgroundColor: "transparent" }}
+                  style={{ backgroundColor: "#ffffff" }}
+                  onLoad={() => setIframeLoaded(true)}
                 />
               </div>
             </div>

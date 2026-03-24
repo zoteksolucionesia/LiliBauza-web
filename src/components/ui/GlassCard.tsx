@@ -17,7 +17,7 @@ export function GlassCard({ children, className, hover = true }: GlassCardProps)
     <motion.div
       className={cn(
         "rounded-3xl p-6 md:p-8 backdrop-blur-xl border transition-all duration-500",
-        hover && "hover:scale-[1.02] hover:shadow-2xl",
+        hover && "hover:shadow-2xl",
         className
       )}
       style={{

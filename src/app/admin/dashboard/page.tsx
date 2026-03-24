@@ -3,19 +3,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { useRouter } from "next/navigation";
-
-// Colores Palo de Rosa (por defecto)
-const colors = {
-  primary: "#D4A5A5",
-  primaryLight: "#E8C4C4",
-  primaryDark: "#B88B8B",
-  secondary: "#C9B1B1",
-  accent: "#E5989B",
-  background: "#FDF8F8",
-  surface: "#FFFFFF",
-  text: "#3D2929",
-  textMuted: "#7D6B6B",
-};
+import { adminColors as colors } from "@/lib/adminColors";
 
 export default function AdminDashboard() {
   const router = useRouter();
@@ -28,42 +16,48 @@ export default function AdminDashboard() {
   });
 
   useEffect(() => {
-    checkAuth();
-    loadStats();
+    // checkAuth debe resolverse antes de cargar datos para evitar queries sin sesión
+    checkAuth().then((authenticated) => {
+      if (authenticated) loadStats();
+    });
   }, []);
 
-  async function checkAuth() {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) {
+  async function checkAuth(): Promise<boolean> {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        router.push("/admin/login");
+        return false;
+      }
+      setLoading(false);
+      return true;
+    } catch (err) {
+      console.error("Error verificando sesión:", err);
+      setLoading(false);
       router.push("/admin/login");
-      return;
+      return false;
     }
-    setLoading(false);
   }
 
   async function loadStats() {
-    const { count: pacientesCount } = await supabase
-      .from("pacientes")
-      .select("*", { count: "exact", head: true });
+    try {
+      const [{ count: pacientesCount }, { count: documentosCount }, { count: testsCount }, { count: citasCount }] =
+        await Promise.all([
+          supabase.from("pacientes").select("*", { count: "exact", head: true }),
+          supabase.from("documentos").select("*", { count: "exact", head: true }),
+          supabase.from("tests").select("*", { count: "exact", head: true }),
+          supabase.from("citas").select("*", { count: "exact", head: true }),
+        ]);
 
-    const { count: documentosCount } = await supabase
-      .from("documentos")
-      .select("*", { count: "exact", head: true });
-
-    const { count: testsCount } = await supabase
-      .from("tests")
-      .select("*", { count: "exact", head: true });
-
-    const { count: citasCount } = await supabase
-      .from("citas")
-      .select("*", { count: "exact", head: true });
-
-    setStats({
-      pacientes: pacientesCount || 0,
-      documentos: documentosCount || 0,
-      tests: testsCount || 0,
-      citas: citasCount || 0,
-    });
+      setStats({
+        pacientes: pacientesCount || 0,
+        documentos: documentosCount || 0,
+        tests: testsCount || 0,
+        citas: citasCount || 0,
+      });
+    } catch (err) {
+      console.error("Error cargando estadísticas:", err);
+    }
   }
 
   if (loading) {
@@ -173,7 +167,7 @@ function StatCard({ title, value, href, color }: any) {
       <div className="flex items-center justify-between">
         <div>
           <p style={{ color: "#6B7280" }} className="text-sm">{title}</p>
-          <p className="text-3xl font-bold" style={{ color: "#3D2929" }}>$value</p>
+          <p className="text-3xl font-bold" style={{ color: "#3D2929" }}>{value}</p>
         </div>
         <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ backgroundColor: color }}>
           <span className="text-white text-xl">→</span>

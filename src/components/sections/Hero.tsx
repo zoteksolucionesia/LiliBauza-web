@@ -1,9 +1,10 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { ArrowDown } from "lucide-react";
 import Image from "next/image";
 import { useTheme } from "@/hooks/useTheme";
+import { content } from "@/constants/content";
 
 interface HeroProps {
   onBookClick: () => void;
@@ -11,6 +12,8 @@ interface HeroProps {
 
 export function Hero({ onBookClick }: HeroProps) {
   const { theme } = useTheme();
+  const shouldReduceMotion = useReducedMotion();
+  const { hero } = content;
 
   return (
     <section
@@ -38,19 +41,20 @@ export function Hero({ onBookClick }: HeroProps) {
             className="order-2 lg:order-1"
           >
             <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.4 }}
               className="mb-8"
             >
-              <Image
-                src="/images/logo_oficial.png"
-                alt="Logo Oficial - Lili Bauza"
-                width={180}
-                height={80}
-                className="h-auto w-auto max-w-[150px] md:max-w-[180px]"
-                priority
-              />
+              <div className="relative w-32 h-32 md:w-40 md:h-40">
+                <Image
+                  src="/images/logo_oficial.png"
+                  alt="Logo Oficial Mtra. Liliana Bauza"
+                  fill
+                  className="object-contain drop-shadow-sm"
+                  priority
+                />
+              </div>
             </motion.div>
 
             <motion.span
@@ -63,29 +67,28 @@ export function Hero({ onBookClick }: HeroProps) {
                 color: theme.primaryDark,
               }}
             >
-              Psicóloga | Cédula: 3398478
+              {hero.badge}
             </motion.span>
 
             <h1
               className="text-5xl sm:text-6xl lg:text-7xl font-serif font-bold leading-tight mb-6"
               style={{ color: theme.text }}
             >
-              Mtra. <span style={{ color: theme.primary }}>Liliana Bauza</span>
+              {hero.title.prefix} <span style={{ color: theme.primary }}>{hero.title.name}</span>
             </h1>
 
             <p
               className="text-2xl md:text-3xl font-medium leading-relaxed mb-4"
               style={{ color: theme.text }}
             >
-              Especialista en trauma y conducta compulsiva
+              {hero.subtitle}
             </p>
 
             <p
               className="text-xl md:text-2xl leading-relaxed mb-8"
               style={{ color: theme.textMuted }}
             >
-              Más de 30 años acompañando personas en su proceso de sanación
-              emocional con enfoques basados en evidencia y calidez humana.
+              {hero.description}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
@@ -99,7 +102,7 @@ export function Hero({ onBookClick }: HeroProps) {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
-                Agendar Cita - $700 MXN
+                {hero.cta.book}
               </motion.button>
 
               <motion.a
@@ -112,53 +115,33 @@ export function Hero({ onBookClick }: HeroProps) {
                 whileHover={{ scale: 1.02, backgroundColor: theme.primaryLight }}
                 whileTap={{ scale: 0.98 }}
               >
-                Ver Servicios
+                {hero.cta.services}
               </motion.a>
             </div>
 
             {/* Trust indicators */}
             <div className="mt-12 flex flex-wrap items-center gap-6">
-              <div>
-                <p
-                  className="text-3xl font-bold"
-                  style={{ color: theme.primaryDark }}
-                >
-                  30+
-                </p>
-                <p className="text-sm" style={{ color: theme.textMuted }}>
-                  Años de experiencia
-                </p>
-              </div>
-              <div
-                className="w-px h-12"
-                style={{ backgroundColor: theme.primary }}
-              />
-              <div>
-                <p
-                  className="text-3xl font-bold"
-                  style={{ color: theme.primaryDark }}
-                >
-                  228+
-                </p>
-                <p className="text-sm" style={{ color: theme.textMuted }}>
-                  Reseñas verificadas
-                </p>
-              </div>
-              <div
-                className="w-px h-12"
-                style={{ backgroundColor: theme.primary }}
-              />
-              <div>
-                <p
-                  className="text-3xl font-bold"
-                  style={{ color: theme.primaryDark }}
-                >
-                  100%
-                </p>
-                <p className="text-sm" style={{ color: theme.textMuted }}>
-                  Confidencial
-                </p>
-              </div>
+              {hero.stats.map((stat, i) => (
+                <div key={stat.label} className="flex items-center gap-6">
+                  <div>
+                    <p
+                      className="text-3xl font-bold"
+                      style={{ color: theme.primaryDark }}
+                    >
+                      {stat.value}
+                    </p>
+                    <p className="text-sm" style={{ color: theme.textMuted }}>
+                      {stat.label}
+                    </p>
+                  </div>
+                  {i < hero.stats.length - 1 && (
+                    <div
+                      className="w-px h-12"
+                      style={{ backgroundColor: theme.primary }}
+                    />
+                  )}
+                </div>
+              ))}
             </div>
 
             {/* Languages */}
@@ -166,24 +149,18 @@ export function Hero({ onBookClick }: HeroProps) {
               <span className="text-sm font-semibold" style={{ color: theme.textMuted }}>
                 Idiomas:
               </span>
-              <div
-                className="px-3 py-1 rounded-full text-sm font-semibold"
-                style={{
-                  backgroundColor: theme.primaryLight,
-                  color: theme.primaryDark,
-                }}
-              >
-                🇪🇸 Español
-              </div>
-              <div
-                className="px-3 py-1 rounded-full text-sm font-semibold"
-                style={{
-                  backgroundColor: theme.primaryLight,
-                  color: theme.primaryDark,
-                }}
-              >
-                🇺🇸 English
-              </div>
+              {hero.languages.map((lang) => (
+                <div
+                  key={lang}
+                  className="px-3 py-1 rounded-full text-sm font-semibold"
+                  style={{
+                    backgroundColor: theme.primaryLight,
+                    color: theme.primaryDark,
+                  }}
+                >
+                  {lang}
+                </div>
+              ))}
             </div>
           </motion.div>
 
@@ -262,8 +239,8 @@ export function Hero({ onBookClick }: HeroProps) {
             href="#about"
             className="flex flex-col items-center gap-2 cursor-pointer"
             style={{ color: theme.textMuted }}
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
+            animate={{ y: shouldReduceMotion ? 0 : [0, 8, 0] }}
+            transition={shouldReduceMotion ? {} : { duration: 1.5, repeat: Infinity }}
           >
             <span className="text-sm">Explora más</span>
             <ArrowDown className="w-5 h-5" />

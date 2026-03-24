@@ -1,205 +1,201 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { MapPin, Phone, Mail, Instagram, Facebook, Linkedin, Award, Star } from "lucide-react";
+import { 
+  MapPin, 
+  Phone, 
+  Mail, 
+  Instagram, 
+  ChevronRight, 
+  Heart, 
+  Stethoscope 
+} from "lucide-react";
 import Image from "next/image";
 import { useTheme } from "@/hooks/useTheme";
+import { content } from "@/constants/content";
 
 export function Footer() {
   const { theme } = useTheme();
   const currentYear = new Date().getFullYear();
+  const { brand, services, quickLinks, social, contact } = content;
 
   return (
     <footer
       id="contact"
-      className="py-16 px-4"
-      style={{ backgroundColor: theme.background }}
+      className="pt-24 pb-12 px-4 relative overflow-hidden"
+      style={{
+        backgroundColor: theme.text,
+        color: "#FFFFFF",
+      }}
     >
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-          {/* Brand */}
-          <div>
-            <h3
-              className="text-2xl font-serif font-bold mb-4"
-              style={{ color: theme.text }}
-            >
-              Mtra. <span style={{ color: theme.primary }}>Liliana Bauza</span>
-            </h3>
-            <p className="text-base leading-relaxed mb-4" style={{ color: theme.textMuted }}>
-              Psicóloga | Cédula Profesional: 3398478
+      {/* Background decoration */}
+      <div
+        className="absolute bottom-0 left-0 w-96 h-96 rounded-full opacity-10 blur-3xl"
+        style={{ backgroundColor: theme.primary }}
+      />
+
+      <div className="max-w-7xl mx-auto relative">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+          {/* Brand Info */}
+          <div className="space-y-6">
+            <div className="flex items-center gap-3">
+              <div className="relative w-12 h-12">
+                <Image
+                  src="/images/logo_oficial.png"
+                  alt="Logo"
+                  fill
+                  className="object-contain brightness-0 invert"
+                />
+              </div>
+              <h2 className="text-3xl font-serif font-bold italic tracking-tight">
+                {brand.logo_text}
+              </h2>
+            </div>
+            <p className="opacity-70 leading-relaxed max-w-xs text-sm">
+              {brand.tagline}
             </p>
-            <p className="text-sm leading-relaxed" style={{ color: theme.textMuted }}>
-              Especialista en trauma y conducta compulsiva. Más de 30 años
-              acompañando personas en su sanación emocional.
-            </p>
-            <div className="mt-4 flex items-center gap-2">
-              <Star className="w-4 h-4" style={{ color: theme.accent }} />
-              <span className="text-sm font-semibold" style={{ color: theme.text }}>
-                228+ reseñas verificadas
-              </span>
+            <div className="flex gap-4">
+              <motion.a
+                whileHover={{ y: -3 }}
+                href={social.whatsapp}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-full flex items-center justify-center transition-colors"
+                style={{ backgroundColor: `${theme.primary}33` }}
+              >
+                <Phone className="w-5 h-5" style={{ color: theme.primaryLight }} />
+              </motion.a>
+              <motion.a
+                whileHover={{ y: -3 }}
+                href={social.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-full flex items-center justify-center transition-colors"
+                style={{ backgroundColor: `${theme.primary}33` }}
+              >
+                <Instagram className="w-5 h-5" style={{ color: theme.primaryLight }} />
+              </motion.a>
+              <motion.a
+                whileHover={{ y: -3 }}
+                href={social.doctoralia}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-full flex items-center justify-center transition-colors"
+               style={{ backgroundColor: `${theme.primary}33` }}
+              >
+                <Stethoscope className="w-5 h-5" style={{ color: theme.primaryLight }} />
+              </motion.a>
             </div>
           </div>
 
-          {/* Contact Info - NAP */}
+          {/* Quick Links */}
           <div>
-            <h4
-              className="text-lg font-semibold mb-4"
-              style={{ color: theme.text }}
-            >
-              Contacto
-            </h4>
-            <ul className="space-y-3">
-              <li className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: theme.primary }} />
-                <span style={{ color: theme.textMuted }}>
-                  Ceiba 105, Colonia Leandro Valle<br />
-                  Villa de Álvarez, Colima 28989
-                </span>
-              </li>
-              <li className="flex items-center gap-3">
-                <Phone className="w-5 h-5 flex-shrink-0" style={{ color: theme.primary }} />
-                <a
-                  href="tel:+523121456877"
-                  className="hover:underline"
-                  style={{ color: theme.textMuted }}
-                >
-                  312 145 6877
-                </a>
-              </li>
-              <li className="flex items-center gap-3">
-                <Mail className="w-5 h-5 flex-shrink-0" style={{ color: theme.primary }} />
-                <a
-                  href="mailto:contacto@lilianabauza.com"
-                  className="hover:underline"
-                  style={{ color: theme.textMuted }}
-                >
-                  contacto@lilianabauza.com
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* Services Links */}
-          <div>
-            <h4
-              className="text-lg font-semibold mb-4"
-              style={{ color: theme.text }}
-            >
-              Servicios
-            </h4>
-            <ul className="space-y-2">
-              {[
-                "Primera Consulta ($700-$800)",
-                "Terapia Individual ($700)",
-                "Terapia de Pareja ($800)",
-                "Terapia Familiar ($900)",
-                "EMDR ($700)",
-                "Consulta en Línea ($700)",
-              ].map((item) => (
-                <li key={item}>
+            <h3 className="font-bold text-lg mb-6 flex items-center gap-2">
+              <span className="w-6 h-1 rounded-full" style={{ backgroundColor: theme.primary }} />
+              Explorar
+            </h3>
+            <ul className="space-y-4">
+              {quickLinks.map((link) => (
+                <li key={link.label}>
                   <a
-                    href="#services"
-                    className="hover:underline transition-colors text-sm"
-                    style={{ color: theme.textMuted }}
+                    href={link.href}
+                    className="opacity-70 hover:opacity-100 transition-opacity flex items-center gap-2"
                   >
-                    {item}
+                    <ChevronRight className="w-4 h-4" style={{ color: theme.primary }} />
+                    {link.label}
                   </a>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Social & Credentials */}
+          {/* Services */}
           <div>
-            <h4
-              className="text-lg font-semibold mb-4"
-              style={{ color: theme.text }}
-            >
-              Credenciales
-            </h4>
-            <div className="space-y-3 mb-6">
-              <div className="flex items-center gap-2">
-                <Award className="w-4 h-4" style={{ color: theme.primary }} />
-                <span className="text-sm" style={{ color: theme.textMuted }}>
-                  Maestría en Terapia Familiar
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Award className="w-4 h-4" style={{ color: theme.primary }} />
-                <span className="text-sm" style={{ color: theme.textMuted }}>
-                  Especialista en Trauma
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Award className="w-4 h-4" style={{ color: theme.primary }} />
-                <span className="text-sm" style={{ color: theme.textMuted }}>
-                  Terapia Sistémica
-                </span>
-              </div>
-            </div>
-
-            <h4
-              className="text-lg font-semibold mb-4"
-              style={{ color: theme.text }}
-            >
-              Sígueme
-            </h4>
-            <div className="flex gap-4 mb-6">
-              {[Instagram, Facebook, Linkedin].map((Icon, i) => (
-                <motion.a
-                  key={i}
-                  href="#"
-                  className="w-10 h-10 rounded-full flex items-center justify-center transition-all"
-                  style={{
-                    backgroundColor: theme.primaryLight,
-                    color: theme.primaryDark
-                  }}
-                  whileHover={{ scale: 1.1, y: -2 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Icon className="w-5 h-5" />
-                </motion.a>
+            <h3 className="font-bold text-lg mb-6 flex items-center gap-2">
+              <span className="w-6 h-1 rounded-full" style={{ backgroundColor: theme.primary }} />
+              Servicios
+            </h3>
+            <ul className="space-y-4">
+              {services.items.slice(0, 5).map((service: any) => (
+                <li key={service.title} className="opacity-70 text-sm">
+                  {service.title}
+                </li>
               ))}
+            </ul>
+          </div>
+
+          {/* Contact Info */}
+          <div className="space-y-6">
+            <h3 className="font-bold text-lg flex items-center gap-2">
+              <span className="w-6 h-1 rounded-full" style={{ backgroundColor: theme.primary }} />
+              Contacto
+            </h3>
+            <div className="space-y-4">
+              <div className="flex gap-3">
+                <MapPin className="w-5 h-5 shrink-0" style={{ color: theme.primary }} />
+                <p className="opacity-70 text-sm leading-relaxed">
+                  {contact.location.address}
+                </p>
+              </div>
+              <div className="flex gap-3">
+                <Phone className="w-5 h-5 shrink-0" style={{ color: theme.primary }} />
+                <p className="opacity-70 text-sm">
+                  {contact.phone.value}
+                </p>
+              </div>
+              <div className="flex gap-3">
+                <Mail className="w-5 h-5 shrink-0" style={{ color: theme.primary }} />
+                <p className="opacity-70 text-sm">
+                  {contact.email.value}
+                </p>
+              </div>
+            </div>
+            {/* 
+            <a
+              href={social.whatsapp}
+              target="_blank"
+              rel="noopener noreferrer"
+             className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold text-sm transition-all hover:shadow-lg hover:scale-105 active:scale-95"
+              style={{
+                backgroundColor: theme.primary,
+                color: theme.text,
+              }}
+            >
+              <Heart className="w-4 h-4" />
+              Agendar Cita
+            </a>
+            */}
+          </div>
+        </div>
+
+        {/* Divider */}
+        <div className="h-px w-full opacity-10 mb-8" style={{ backgroundColor: "#FFFFFF" }} />
+
+        {/* Bottom Credits */}
+        <div className="flex flex-col items-center gap-8 text-xs">
+          <div className="flex flex-col md:flex-row justify-between items-center w-full gap-6 opacity-60">
+            <p>© {currentYear} {brand.footer_brand}. Todos los derechos reservados.</p>
+            <div className="flex gap-8">
+              <a href="/aviso-de-privacidad" className="hover:underline">Aviso de Privacidad</a>
+              <a href="#" className="hover:underline">Términos de Uso</a>
             </div>
           </div>
-        </div>
-
-        {/* Zotek Logo Section - Full width, centered at bottom */}
-        <div
-          className="mt-16 pt-8 border-t flex flex-col items-center justify-center"
-          style={{ borderColor: `${theme.primary}22` }}
-        >
-          <p className="text-xs font-semibold mb-2" style={{ color: theme.textMuted }}>
-            Desarrollo por
-          </p>
-          <div className="mb-3">
-            <Image
-              src="/images/logo_zotek_principal.svg"
-              alt="Zotek Soluciones IA"
-              width={120}
-              height={40}
-              className="object-contain"
-            />
-          </div>
-          <p className="text-xs" style={{ color: theme.textMuted }}>
-            Contacto: zoteksolucionesia@gmail.com
-          </p>
-        </div>
-
-        {/* Bottom bar */}
-        <div
-          className="mt-8 pt-8 border-t flex flex-col md:flex-row justify-between items-center gap-4"
-          style={{ borderColor: `${theme.primary}22` }}
-        >
-          <p className="text-sm" style={{ color: theme.textMuted }}>
-            © {currentYear} Mtra. Liliana Bauza. Todos los derechos reservados.
-          </p>
-          <div className="flex gap-6">
-            <a href="#" className="text-sm hover:underline" style={{ color: theme.textMuted }}>
-              Aviso de Privacidad
-            </a>
-            <a href="#" className="text-sm hover:underline" style={{ color: theme.textMuted }}>
-              Términos de Uso
+          
+          <div className="flex flex-col items-center gap-3 py-6 border-t border-white/5 w-full">
+            <span className="text-xs uppercase tracking-[0.2em] opacity-50">Desarrollado por</span>
+            <div className="relative w-48 h-12 grayscale hover:grayscale-0 transition-all duration-500 cursor-pointer">
+              <Image
+                src="/images/logo_zotek_principal.svg"
+                alt="Zotek Solutions IA"
+                fill
+                className="object-contain"
+              />
+            </div>
+            <a 
+              href="mailto:zoteksolucionesia@gmail.com" 
+              className="text-white/40 hover:text-white transition-colors"
+            >
+              Contacto: zoteksolucionesia@gmail.com
             </a>
           </div>
         </div>
