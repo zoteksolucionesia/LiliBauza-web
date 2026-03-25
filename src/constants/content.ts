@@ -259,9 +259,9 @@ export const content = {
     doctoralia: "https://www.doctoralia.com.mx/liliana-bauza/psicologo/villa-de-alvarez"
   },
   booking: {
-    // Cal.com (prueba con cuenta de Omar, cambiar a la cuenta de Lili cuando esté lista)
-    // cal_username: "lilibauza" (pendiente)
-    cal_url: "https://cal.com/omar-morentin-lopez-ywxs6b/30min",
+    // Cal.com Configuración Oficial
+    // cal_username: "terhfam-villa-de-alvarez-p0s5lj"
+    cal_url: "https://cal.com/terhfam-villa-de-alvarez-p0s5lj",
     modal_title: "Agenda tu Cita",
     loading_text: "Cargando agenda...",
     fallback_text: "¿No carga? Haz clic aquí para abrir el calendario",
