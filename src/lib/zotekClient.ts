@@ -8,6 +8,11 @@ export interface ZotekSchedule {
   end_time: string;      // "HH:MM"
 }
 
+export interface BookedSlot {
+  date: string; // "YYYY-MM-DD"
+  time: string; // "HH:MM"
+}
+
 export interface ZotekAppointment {
   id: number;
   name: string;
@@ -39,8 +44,14 @@ async function zotekFetch<T>(path: string, options?: RequestInit): Promise<T> {
   return res.json() as Promise<T>;
 }
 
-export function getSchedules(): Promise<ZotekSchedule[]> {
-  return zotekFetch<ZotekSchedule[]>(`/api/clients/${CLIENT_ID}/schedules`);
+export async function getSchedules(): Promise<{ schedules: ZotekSchedule[]; booked: BookedSlot[] }> {
+  // El endpoint de Zotek devuelve { schedules: [...], booked: [...] } (no un array directo).
+  // Toleramos ambos formatos por robustez ante cambios futuros del backend.
+  const data = await zotekFetch<
+    { schedules?: ZotekSchedule[]; booked?: BookedSlot[] } | ZotekSchedule[]
+  >(`/api/clients/${CLIENT_ID}/schedules`);
+  if (Array.isArray(data)) return { schedules: data, booked: [] };
+  return { schedules: data.schedules ?? [], booked: data.booked ?? [] };
 }
 
 export function createAppointment(payload: BookingPayload): Promise<{ status: string; appointment_id: number }> {

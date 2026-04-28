@@ -9,6 +9,7 @@ import {
   createAppointment,
   generateTimeSlots,
   type ZotekSchedule,
+  type BookedSlot,
 } from "@/lib/zotekClient";
 
 interface BookingModalProps {
@@ -34,6 +35,7 @@ export function BookingModal({ isOpen, onClose }: BookingModalProps) {
   const [step, setStep] = useState<Step>("info");
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
   const [schedules, setSchedules] = useState<ZotekSchedule[]>([]);
+  const [booked, setBooked] = useState<BookedSlot[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -46,8 +48,14 @@ export function BookingModal({ isOpen, onClose }: BookingModalProps) {
   useEffect(() => {
     if (!isOpen) { reset(); return; }
     getSchedules()
-      .then(setSchedules)
-      .catch(() => setSchedules([]));
+      .then(({ schedules, booked }) => {
+        setSchedules(schedules);
+        setBooked(booked);
+      })
+      .catch(() => {
+        setSchedules([]);
+        setBooked([]);
+      });
   }, [isOpen, reset]);
 
   // Dates that have at least one schedule slot
@@ -57,10 +65,17 @@ export function BookingModal({ isOpen, onClose }: BookingModalProps) {
       .map(s => s.schedule_date)
   )].sort();
 
-  // Time slots for the selected date
-  const timeSlotsForDate = schedules
-    .filter(s => s.schedule_date === form.date)
-    .flatMap(s => generateTimeSlots(s.start_time, s.end_time));
+  // Time slots for the selected date, excluyendo los ya reservados
+  const bookedTimesForDate = new Set(
+    booked.filter(b => b.date === form.date).map(b => b.time)
+  );
+  const timeSlotsForDate = [...new Set(
+    schedules
+      .filter(s => s.schedule_date === form.date)
+      .flatMap(s => generateTimeSlots(s.start_time, s.end_time))
+  )]
+    .filter(t => !bookedTimesForDate.has(t))
+    .sort();
 
   function field(key: keyof FormState, value: string) {
     setForm(f => ({ ...f, [key]: value }));
