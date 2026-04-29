@@ -44,14 +44,16 @@ async function zotekFetch<T>(path: string, options?: RequestInit): Promise<T> {
   return res.json() as Promise<T>;
 }
 
-export async function getSchedules(): Promise<{ schedules: ZotekSchedule[]; booked: BookedSlot[] }> {
-  // El endpoint de Zotek devuelve { schedules: [...], booked: [...] } (no un array directo).
-  // Toleramos ambos formatos por robustez ante cambios futuros del backend.
+export async function getSchedules(): Promise<{ schedules: ZotekSchedule[]; booked: BookedSlot[]; sessionDuration: number }> {
   const data = await zotekFetch<
-    { schedules?: ZotekSchedule[]; booked?: BookedSlot[] } | ZotekSchedule[]
+    { schedules?: ZotekSchedule[]; booked?: BookedSlot[]; session_duration?: number } | ZotekSchedule[]
   >(`/api/clients/${CLIENT_ID}/schedules`);
-  if (Array.isArray(data)) return { schedules: data, booked: [] };
-  return { schedules: data.schedules ?? [], booked: data.booked ?? [] };
+  if (Array.isArray(data)) return { schedules: data, booked: [], sessionDuration: 60 };
+  return {
+    schedules: data.schedules ?? [],
+    booked: data.booked ?? [],
+    sessionDuration: data.session_duration ?? 60,
+  };
 }
 
 export function createAppointment(payload: BookingPayload): Promise<{ status: string; appointment_id: number }> {
@@ -67,18 +69,18 @@ export function getAppointments(token: string): Promise<ZotekAppointment[]> {
   });
 }
 
-/** Genera slots de 60 min dentro de un rango start_time..end_time */
-export function generateTimeSlots(start: string, end: string): string[] {
+/** Genera slots dentro de un rango start_time..end_time según la duración de sesión (minutos). */
+export function generateTimeSlots(start: string, end: string, durationMinutes = 60): string[] {
   const slots: string[] = [];
   const [sh, sm] = start.split(":").map(Number);
   const [eh, em] = end.split(":").map(Number);
   let cur = sh * 60 + sm;
   const endMins = eh * 60 + em;
-  while (cur + 60 <= endMins) {
+  while (cur + durationMinutes <= endMins) {
     const h = String(Math.floor(cur / 60)).padStart(2, "0");
     const m = String(cur % 60).padStart(2, "0");
     slots.push(`${h}:${m}`);
-    cur += 60;
+    cur += durationMinutes;
   }
   return slots;
 }

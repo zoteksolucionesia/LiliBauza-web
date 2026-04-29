@@ -36,6 +36,7 @@ export function BookingModal({ isOpen, onClose }: BookingModalProps) {
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
   const [schedules, setSchedules] = useState<ZotekSchedule[]>([]);
   const [booked, setBooked] = useState<BookedSlot[]>([]);
+  const [sessionDuration, setSessionDuration] = useState(60);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -48,9 +49,10 @@ export function BookingModal({ isOpen, onClose }: BookingModalProps) {
   useEffect(() => {
     if (!isOpen) { reset(); return; }
     getSchedules()
-      .then(({ schedules, booked }) => {
+      .then(({ schedules, booked, sessionDuration }) => {
         setSchedules(schedules);
         setBooked(booked);
+        setSessionDuration(sessionDuration);
       })
       .catch(() => {
         setSchedules([]);
@@ -65,16 +67,23 @@ export function BookingModal({ isOpen, onClose }: BookingModalProps) {
       .map(s => s.schedule_date)
   )].sort();
 
-  // Time slots for the selected date, excluyendo los ya reservados
+  // Time slots for the selected date, excluyendo reservados y horas pasadas si es hoy
   const bookedTimesForDate = new Set(
     booked.filter(b => b.date === form.date).map(b => b.time)
   );
+  const today = new Date().toISOString().slice(0, 10);
+  const nowMinutes = new Date().getHours() * 60 + new Date().getMinutes();
   const timeSlotsForDate = [...new Set(
     schedules
       .filter(s => s.schedule_date === form.date)
-      .flatMap(s => generateTimeSlots(s.start_time, s.end_time))
+      .flatMap(s => generateTimeSlots(s.start_time, s.end_time, sessionDuration))
   )]
     .filter(t => !bookedTimesForDate.has(t))
+    .filter(t => {
+      if (form.date !== today) return true;
+      const [h, m] = t.split(":").map(Number);
+      return h * 60 + m > nowMinutes;
+    })
     .sort();
 
   function field(key: keyof FormState, value: string) {
