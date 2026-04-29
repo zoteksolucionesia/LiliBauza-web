@@ -53,14 +53,14 @@ export function Header({ onBookClick }: HeaderProps) {
             className="flex items-center gap-3"
             whileHover={{ scale: 1.02 }}
           >
-            <div className="relative w-10 h-10 md:w-12 md:h-12">
-              <Image
-                src="/images/logo_oficial.png"
-                alt="Logo"
-                fill
-                className="object-contain"
-              />
-            </div>
+              <div className="relative w-10 h-10 md:w-12 md:h-12">
+                <Image
+                  src="/images/logo_terhfam.png"
+                  alt="Logo"
+                  fill
+                  className="object-contain"
+                />
+              </div>
             <span className="text-xl md:text-2xl font-serif font-bold" style={{ color: theme.text }}>
               {brand.logo_text.split(' ')[0]}
               <span style={{ color: theme.primary }}>{brand.logo_text.split(' ')[1]}</span>

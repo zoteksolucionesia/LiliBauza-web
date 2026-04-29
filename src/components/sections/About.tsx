@@ -28,22 +28,15 @@ export function About() {
             transition={{ duration: 0.8 }}
             className="relative"
           >
-            <div className="relative aspect-square max-w-md mx-auto">
+            <div className="relative aspect-square max-w-lg mx-auto">
               <div
-                className="absolute inset-0 rounded-full opacity-20"
-                style={{ backgroundColor: theme.primary }}
-              />
-              <div
-                className="absolute inset-4 rounded-full overflow-hidden"
-                style={{
-                  border: `3px solid ${theme.primary}44`,
-                }}
+                className="relative h-full w-full overflow-hidden"
               >
                 <Image
-                  src="/images/LiliBauza.png"
-                  alt={`${brand.title} ${brand.name} - ${brand.specialty}`}
+                  src="/images/logo_terhfam.png"
+                  alt="Logo Terhfam"
                   fill
-                  className="object-cover"
+                  className="object-contain"
                   sizes="(max-width: 768px) 100vw, 50vw"
                 />
               </div>

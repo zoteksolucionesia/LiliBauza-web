@@ -1,0 +1,126 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { supabase } from "@/lib/supabaseClient";
+import { useRouter } from "next/navigation";
+import { adminColors as colors } from "@/lib/adminColors";
+
+export default function AdminLogin() {
+  const router = useRouter();
+  const [isClient, setIsClient] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  useEffect(() => { setIsClient(true) }, []);
+  if (!isClient) return null;
+
+  async function handleLogin(e: React.FormEvent) {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      setError(error.message);
+      setLoading(false);
+      return;
+    }
+
+    router.push("/admin/dashboard");
+  }
+
+  return (
+    <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: colors.background }}>
+      <div
+        className="max-w-md w-full rounded-lg shadow-lg p-8"
+        style={{ backgroundColor: colors.surface }}
+      >
+        <div className="text-center mb-8">
+          <h1 className="text-2xl font-bold" style={{ color: colors.text }}>
+            Admin Login
+          </h1>
+          <p className="mt-2" style={{ color: colors.textMuted }}>
+            Mtra. Liliana Bauza
+          </p>
+        </div>
+
+        <form onSubmit={handleLogin} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium mb-2" style={{ color: colors.text }}>
+              Email
+            </label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 transition-all"
+              style={{
+                borderColor: `${colors.primary}66`,
+                backgroundColor: colors.background,
+                color: colors.text,
+              }}
+              placeholder="contacto@lilianabauza.com"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-2" style={{ color: colors.text }}>
+              Contraseña
+            </label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 transition-all"
+              style={{
+                borderColor: `${colors.primary}66`,
+                backgroundColor: colors.background,
+                color: colors.text,
+              }}
+              placeholder="••••••••"
+            />
+          </div>
+
+          {error && (
+            <div className="p-3 rounded-lg text-sm" style={{ backgroundColor: `${colors.accent}22`, color: colors.text }}>
+              {error}
+            </div>
+          )}
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full py-3 rounded-lg font-semibold transition-all hover:opacity-90 disabled:opacity-50"
+            style={{
+              backgroundColor: colors.primary,
+              color: "#FFFFFF",
+            }}
+          >
+            {loading ? "Iniciando sesión..." : "Iniciar Sesión"}
+          </button>
+        </form>
+
+        <div className="mt-6 text-center">
+          <p className="text-sm" style={{ color: colors.textMuted }}>
+            ¿Problemas para acceder?{" "}
+            <a
+              href="mailto:zoteksolucionesia@gmail.com"
+              className="font-medium hover:underline"
+              style={{ color: colors.primaryDark }}
+            >
+              Contacta al soporte
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}

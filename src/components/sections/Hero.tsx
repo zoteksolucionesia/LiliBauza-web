@@ -48,10 +48,10 @@ export function Hero({ onBookClick }: HeroProps) {
             >
               <div className="relative w-32 h-32 md:w-40 md:h-40">
                 <Image
-                  src="/images/logo_oficial.png"
+                  src="/images/logo_terhfam.png"
                   alt="Logo Oficial Mtra. Liliana Bauza"
                   fill
-                  className="object-contain drop-shadow-sm"
+                  className="object-contain"
                   priority
                 />
               </div>
